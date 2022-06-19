@@ -12,7 +12,19 @@
   },
   "tauri": {
     "allowlist": {
-      "all": true
+      "all": true,
+      "fs": {
+        "scope": ["$HOME/Projects", "$HOME/Projects/*"]
+      },
+      "shell": {
+        "scope": [
+          {
+            "name": "pwsh",
+            "cmd": "pwsh",
+            "args": true
+          }
+        ]
+      }
     },
     "bundle": {
       "active": true,
