@@ -1,42 +1,39 @@
-import { Button } from '@mantine/core'
-import { useState } from 'react'
+import { Table } from '@mantine/core'
 
-import { checkProjects } from './checkProjects'
-import logo from './logo.svg'
 import './App.css'
 
+import useProjectStatus from './useProjectsStatus'
+
 function App() {
-  const [count, setCount] = useState(0)
+  const projectsStatus = useProjectStatus()
 
   return (
     <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type='button' onClick={() => setCount(count => count + 1)}>
-            count is: {count}
-          </button>
+      {/* <header className='App-header'>
+        <Group>
           <Button onClick={async () => await checkProjects()}>Test</Button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a className='App-link' href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className='App-link'
-            href='https://vitejs.dev/guide/features.html'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+        </Group>
+      </header> */}
+      <main>
+        <Table>
+          <thead>
+            <tr>
+              <th>Project Path</th>
+              <th>Project Folder</th>
+              <th>Project Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {projectsStatus.map((element, index) => (
+              <tr key={index}>
+                <td>{element.path}</td>
+                <td>{element.folder}</td>
+                <td>{element.name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </main>
     </div>
   )
 }
