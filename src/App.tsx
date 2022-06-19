@@ -1,41 +1,44 @@
-import { Table } from '@mantine/core'
+import { Button, Group, Loader, Table } from '@mantine/core'
+import { relaunch } from '@tauri-apps/api/process'
 
 import './App.css'
 
 import useProjectStatus from './useProjectsStatus'
 
-function App() {
+export default function App() {
   const projectsStatus = useProjectStatus()
 
   return (
     <div className='App'>
-      {/* <header className='App-header'>
+      <header className='App-header'>
         <Group>
-          <Button onClick={async () => await checkProjects()}>Test</Button>
+          <Button onClick={async () => await relaunch()}>Test</Button>
         </Group>
-      </header> */}
+      </header>
       <main>
-        <Table>
-          <thead>
-            <tr>
-              <th>Project Path</th>
-              <th>Project Folder</th>
-              <th>Project Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            {projectsStatus.map((element, index) => (
-              <tr key={index}>
-                <td>{element.path}</td>
-                <td>{element.folder}</td>
-                <td>{element.name}</td>
+        {projectsStatus.length ? (
+          <Table>
+            <thead>
+              <tr>
+                <th>Project Path</th>
+                <th>Project Folder</th>
+                <th>Project Name</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {projectsStatus.map((element, index) => (
+                <tr key={index}>
+                  <td>{element.path}</td>
+                  <td>{element.folder}</td>
+                  <td>{element.name}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        ) : (
+          <Loader />
+        )}
       </main>
     </div>
   )
 }
-
-export default App
