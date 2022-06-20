@@ -3,8 +3,8 @@ import { invoke } from '@tauri-apps/api/tauri'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import App from './App'
-import './index.css'
+import App from './components/App'
+import './styles/index.css'
 
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {

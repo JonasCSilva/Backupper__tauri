@@ -1,9 +1,9 @@
 import { Button, Group, Loader, Table } from '@mantine/core'
 import { relaunch } from '@tauri-apps/api/process'
 
-import './App.css'
+import '../styles/App.css'
 
-import useProjectStatus from './useProjectsStatus'
+import useProjectStatus from '../hooks/useProjectsStatus'
 
 export default function App() {
   const projectsStatus = useProjectStatus()
