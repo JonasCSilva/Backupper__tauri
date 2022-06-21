@@ -63,11 +63,13 @@
       {
         "maximized": true,
         "title": "Backupper",
-        "visible": false
+        "visible": false,
+        "url": "index.html",
+        "label": "mainscreen"
       },
       {
-        "width": 360,
-        "height": 360,
+        "width": 240,
+        "height": 240,
         "center": true,
         "decorations": false,
         "url": "splashscreen.html",

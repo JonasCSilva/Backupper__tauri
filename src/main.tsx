@@ -9,7 +9,7 @@ import './styles/index.css'
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     invoke('close_splashscreen')
-  }, 10000)
+  }, 5000)
 })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
