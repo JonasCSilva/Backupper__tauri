@@ -1,4 +1,4 @@
-import { Button, Group, Loader, Table } from '@mantine/core'
+import { Button, Checkbox, Group, Loader, Table } from '@mantine/core'
 import { relaunch } from '@tauri-apps/api/process'
 
 import '../styles/App.css'
@@ -15,7 +15,7 @@ export default function App() {
           <Button onClick={async () => await relaunch()}>Test</Button>
         </Group>
       </header>
-      <main>
+      <div id='main'>
         {projectsStatus.length ? (
           <Table>
             <thead>
@@ -23,6 +23,10 @@ export default function App() {
                 <th>Project Path</th>
                 <th>Project Folder</th>
                 <th>Project Name</th>
+                <th>Git Repository</th>
+                <th>Git Uncommitted</th>
+                <th>Plastic Workspace</th>
+                <th>Plastic Uncommitted</th>
               </tr>
             </thead>
             <tbody>
@@ -31,14 +35,28 @@ export default function App() {
                   <td>{element.path}</td>
                   <td>{element.folder}</td>
                   <td>{element.name}</td>
+                  <td>
+                    <Checkbox readOnly checked={element.gitRepository} />
+                  </td>
+                  <td>
+                    <Checkbox readOnly checked={element.gitUncommitted} color='orange' />
+                  </td>
+                  <td>
+                    <Checkbox readOnly checked={element.plasticWorkspace} />
+                  </td>
+                  <td>
+                    <Checkbox readOnly checked={element.plasticUncommited} color='orange' />
+                  </td>
                 </tr>
               ))}
             </tbody>
           </Table>
         ) : (
-          <Loader />
+          <div id='loaderContainer'>
+            <Loader id='loader' />
+          </div>
         )}
-      </main>
+      </div>
     </div>
   )
 }
