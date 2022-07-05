@@ -11,7 +11,11 @@ export async function checkProjects() {
     commands: Promise<ChildProcess>[] = [],
     test2: FileEntry[] = []
 
-  await getDirs(commands, test2)
+  const stackFolders = await readDir('Projects', {
+    dir: BaseDirectory.Home
+  })
+
+  await getDirs(stackFolders, commands, test2)
 
   const commandsResults = await Promise.all(commands)
 
@@ -75,38 +79,38 @@ function getStatus(
   })
 }
 
-async function getDirs(commands: Promise<ChildProcess>[], test2: FileEntry[]) {
-  const stackFolders = await readDir('Projects', {
-    dir: BaseDirectory.Home
-  })
+async function getDirs(stackFolders: FileEntry[], commands: Promise<ChildProcess>[], test2: FileEntry[]) {
+  const projectFoldersArrayPromises = []
+  const joinsPromises = []
 
   for (const stackFolder of stackFolders) {
-    const projectFolders = await readDir(await join('Projects', stackFolder.name!), {
-      dir: BaseDirectory.Home
-    })
+    joinsPromises.push(join('Projects', stackFolder.name!))
+  }
 
-    for (const projectFolder of projectFolders) {
-      try {
-        await readDir(await join('Projects', stackFolder.name!, projectFolder.name!), {
-          dir: BaseDirectory.Home
-        })
+  const joins = await Promise.all(joinsPromises)
 
-        const command1 = new Command('pwsh', ['/C', 'git status'], {
-          cwd: projectFolder.path
-        }).execute()
+  for (const join of joins) {
+    projectFoldersArrayPromises.push(
+      readDir(join, {
+        dir: BaseDirectory.Home
+      })
+    )
+  }
 
-        const command2 = new Command('pwsh', ['/C', 'cm status --all'], {
-          cwd: projectFolder.path
-        }).execute()
+  const projectFoldersArray = await Promise.all(projectFoldersArrayPromises)
 
-        commands.push(command1, command2)
-        test2.push(projectFolder, stackFolder)
-      } catch (error: any) {
-        // If not file
-        if (!error.match('The directory name is invalid')) {
-          console.log(error)
-        }
-      }
+  for (let i = 0; i < projectFoldersArray.length; i++) {
+    for (const projectFolder of projectFoldersArray[i]) {
+      const command1 = new Command('pwsh', ['/C', 'git status'], {
+        cwd: projectFolder.path
+      }).execute()
+
+      const command2 = new Command('pwsh', ['/C', 'cm status --all'], {
+        cwd: projectFolder.path
+      }).execute()
+
+      commands.push(command1, command2)
+      test2.push(projectFolder, stackFolders[i])
     }
   }
 }

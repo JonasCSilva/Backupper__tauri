@@ -7,9 +7,9 @@ import App from './components/App'
 import './styles/index.css'
 
 document.addEventListener('DOMContentLoaded', () => {
-  // setTimeout(() => {
-  invoke('close_splashscreen')
-  // }, 5000)
+  setTimeout(() => {
+    invoke('close_splashscreen')
+  }, 1000)
 })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
