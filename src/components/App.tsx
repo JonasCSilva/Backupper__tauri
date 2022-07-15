@@ -25,8 +25,6 @@ export default function App() {
                 <th>Project Name</th>
                 <th>Git Repository</th>
                 <th>Git Uncommitted</th>
-                <th>Plastic Workspace</th>
-                <th>Plastic Uncommitted</th>
               </tr>
             </thead>
             <tbody>
@@ -40,12 +38,6 @@ export default function App() {
                   </td>
                   <td>
                     <Checkbox readOnly checked={element.gitUncommitted} color='orange' />
-                  </td>
-                  <td>
-                    <Checkbox readOnly checked={element.plasticWorkspace} />
-                  </td>
-                  <td>
-                    <Checkbox readOnly checked={element.plasticUncommited} color='orange' />
                   </td>
                 </tr>
               ))}

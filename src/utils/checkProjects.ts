@@ -19,14 +19,8 @@ export async function checkProjects() {
 
   const commandsResults = await Promise.all(commands)
 
-  for (let index = 0; index < commandsResults.length / 2; index++) {
-    getStatus(
-      projectsStatus,
-      commandsResults[index * 2],
-      commandsResults[index * 2 + 1],
-      test2[index * 2],
-      test2[index * 2 + 1]
-    )
+  for (let index = 0; index < commandsResults.length; index++) {
+    getStatus(projectsStatus, commandsResults[index], test2[index * 2], test2[index * 2 + 1])
   }
 
   return projectsStatus
@@ -35,14 +29,11 @@ export async function checkProjects() {
 function getStatus(
   projectsStatus: ProjectStatus[],
   { stdout: stdout1, stderr: stderr1 }: ChildProcess,
-  { stdout: stdout2, stderr: stderr2 }: ChildProcess,
   { name, path }: FileEntry,
   stackFolder: FileEntry
 ) {
   let gitUncommitted = false,
-    plasticUncommited = false,
-    gitRepository = false,
-    plasticWorkspace = false
+    gitRepository = false
 
   if (!stderr1) {
     if (stdout1.match('Changes not staged for commit:') || stdout1.match('Untracked files:')) {
@@ -56,26 +47,12 @@ function getStatus(
     }
   }
 
-  if (!stderr2) {
-    if (stdout2.match('Changed') || stdout2.match('Added')) {
-      plasticUncommited = true
-    }
-    plasticWorkspace = true
-  } else {
-    if (stderr2.match('is not in a workspace')) {
-    } else {
-      console.log(stderr2)
-    }
-  }
-
   projectsStatus.push({
     name: name!,
     path,
     folder: stackFolder.name!,
     gitUncommitted,
-    plasticUncommited,
-    gitRepository,
-    plasticWorkspace
+    gitRepository
   })
 }
 
@@ -105,11 +82,7 @@ async function getDirs(stackFolders: FileEntry[], commands: Promise<ChildProcess
         cwd: projectFolder.path
       }).execute()
 
-      const command2 = new Command('pwsh', ['/C', 'cm status --all'], {
-        cwd: projectFolder.path
-      }).execute()
-
-      commands.push(command1, command2)
+      commands.push(command1)
       test2.push(projectFolder, stackFolders[i])
     }
   }
